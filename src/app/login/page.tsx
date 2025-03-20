@@ -4,7 +4,7 @@ import LoginCard from "./loginCard";
 
 function LoginPage() {
   return (
-    <div className="page">
+    <div className="page bg-muted">
       <div className="my-auto flex-1">
         <LoginCard />
         <footer className="absolute bottom-0 flex mt-20 xl:text-left">
