@@ -13,25 +13,39 @@ import { Button } from "../../components/ui/button";
 
 function LoginCard() {
   return (
-    <Card className="w-[350px] mx-auto">
-      <CardHeader>
-        <CardTitle>LogIn</CardTitle>
-        <CardDescription>Hello Pal... 👋</CardDescription>
+    <Card className="w-[380px] mx-auto">
+      <CardHeader className="text-center">
+        <CardTitle className="text-xl">Hello Pal... 👋</CardTitle>
+        <CardDescription>Login with your credentials</CardDescription>
       </CardHeader>
-      <CardContent>
-        <form className="flex flex-col space-y-2 w-full">
+      <CardContent className="mt-5">
+        <form className="flex flex-col space-y-3 w-full">
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="email">Email</Label>
             <Input type="email"></Input>
           </div>
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="password">Password</Label>
+            <div className="flex items-center">
+              <Label htmlFor="password">Password</Label>
+              <a
+                href="#"
+                className="ml-auto text-muted-foreground text-sm underline-offset-4 hover:underline"
+              >
+                Forgot your password?
+              </a>
+            </div>
             <Input type="password"></Input>
           </div>
         </form>
       </CardContent>
-      <CardFooter>
-        <Button>Login</Button>
+      <CardFooter className="mt-5 flex flex-col items-center gap-5">
+        <Button className="w-full">Login</Button>
+        <div className="text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <a href="#" className="underline underline-offset-4">
+            Sign up
+          </a>
+        </div>
       </CardFooter>
     </Card>
   );
