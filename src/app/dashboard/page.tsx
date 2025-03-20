@@ -1,13 +1,16 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import React from "react";
 import AppSidebar from "./AppSideBar/AppSidebar";
+import SiteHeader from "./SiteHeader";
 
 function Dashboard() {
   return (
     <SidebarProvider>
       <div className="page">
         <AppSidebar />
-        <SidebarTrigger />
+        <SidebarInset>
+          <SiteHeader />
+        </SidebarInset>
       </div>
     </SidebarProvider>
   );

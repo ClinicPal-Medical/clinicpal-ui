@@ -20,7 +20,7 @@ function CollapsibleSidebarMenu({
     <Collapsible className="group/collapsible">
       <SidebarGroup>
         <SidebarGroupLabel asChild>
-          <CollapsibleTrigger>
+          <CollapsibleTrigger className="cursor-pointer">
             {menuLabel}
             <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
           </CollapsibleTrigger>

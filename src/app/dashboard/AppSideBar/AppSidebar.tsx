@@ -99,7 +99,7 @@ function AppSidebar() {
   };
 
   return (
-    <Sidebar>
+    <Sidebar variant="inset">
       <SidebarHeader className="items-center m-4">
         <h1 className="text-3xl font-bold">ClinicPal</h1>
       </SidebarHeader>
