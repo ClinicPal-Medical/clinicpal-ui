@@ -12,6 +12,7 @@ import React from "react";
 import UserManager from "./UserManager";
 import CollapsibleSidebarMenu from "./CollapsibleSidebarMenu";
 import AppSidebarMenu from "./AppSidebarMenu";
+import Logo from "@/app/Logo";
 
 function AppSidebar() {
   const quickLinks = [
@@ -101,6 +102,7 @@ function AppSidebar() {
   return (
     <Sidebar variant="inset">
       <SidebarHeader className="items-center m-4">
+        <Logo width="3em" />
         <h1 className="text-3xl font-bold">ClinicPal</h1>
       </SidebarHeader>
       <SidebarContent>
