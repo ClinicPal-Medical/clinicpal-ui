@@ -6,6 +6,7 @@ import { CalendarArrowDown, CalendarCheck, Eye, HandCoins } from "lucide-react";
 import DashboardChart from "./DashboardChart";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import DashboardTable from "./DashboardTable";
+import { getCurrentDate } from "@/lib/utils";
 
 function DashboardContent() {
   const scheduledAppointments = {
@@ -40,6 +41,10 @@ function DashboardContent() {
 
   return (
     <div className="flex flex-1 w-full justify-evenly items-center flex-col gap-4">
+      <div className="w-[87%] flex flex-col items-baseline">
+        <p className="text-4xl font-stretch-105%">Today at a Glance</p>
+        <p className="font-extralight text-muted-foreground">{getCurrentDate()}</p>
+      </div>
       <div className="flex w-full justify-evenly flex-col gap-4 md:flex-row">
         <DashboardCard cardContent={scheduledAppointments} />
         <DashboardCard cardContent={pendingAppointments} />
