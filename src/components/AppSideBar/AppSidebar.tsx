@@ -61,7 +61,7 @@ function AppSidebar() {
       icon: Search,
     },
     {
-      title: "Add Appointment",
+      title: "New Appointment",
       url: "#",
       icon: Plus,
     },
@@ -83,12 +83,12 @@ function AppSidebar() {
   const secondaryMenuItems = [
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: Wrench,
     },
     {
       title: "Help",
-      url: "#",
+      url: "/help",
       icon: HelpCircleIcon,
     },
   ];
