@@ -23,7 +23,7 @@ function AppSidebar() {
     },
     {
       title: "New Appointment",
-      url: "#",
+      url: "/appointments/new",
       icon: CalendarPlus,
     },
   ];
@@ -62,7 +62,7 @@ function AppSidebar() {
     },
     {
       title: "New Appointment",
-      url: "#",
+      url: "/appointments/new",
       icon: Plus,
     },
   ];
