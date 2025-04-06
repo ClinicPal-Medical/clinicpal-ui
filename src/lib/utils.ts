@@ -12,11 +12,13 @@ export function getSiteHeader(pathname: string) {
 
 export function getCurrentDate() {
   const today = new Date();
-
-  return today.toLocaleDateString("en-GB", {
+  const formattedToday = today.toLocaleDateString("en-GB", {
     weekday: "long", // e.g., Saturday
     day: "numeric", // e.g., 1
     month: "long", // e.g., January
     year: "numeric", // e.g., 2025
   });
+  const weekday = formattedToday.split(" ")[0].concat(", ");
+
+  return weekday.concat(formattedToday.split(" ").slice(1).join(" "));
 }

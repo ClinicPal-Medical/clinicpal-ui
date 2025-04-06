@@ -17,7 +17,7 @@ function AppSidebarMenu({
   menuLabel?: string;
   menuItems: Array<{
     title: string;
-    icon: LucideIcon;
+    icon?: LucideIcon;
     url: string;
   }>;
   className?: string;
@@ -31,7 +31,7 @@ function AppSidebarMenu({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
                 <a href={item.url}>
-                  <item.icon />
+                  {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </a>
               </SidebarMenuButton>

@@ -36,7 +36,7 @@ function AppSidebar() {
     },
     {
       title: "Add Patient",
-      url: "#",
+      url: "/patients/new",
       icon: Plus,
     },
   ];

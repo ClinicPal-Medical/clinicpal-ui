@@ -57,8 +57,8 @@ function DashboardContent() {
             <DashboardChart />
           </CardContent>
         </Card>
-        <Card className="flex w-[55%]">
-          <CardHeader>Appointments Queue</CardHeader>
+        <Card className="flex md:w-[55%]">
+          <CardHeader>Upcomming Appointments</CardHeader>
           <CardContent>
             <DashboardTable />
           </CardContent>
