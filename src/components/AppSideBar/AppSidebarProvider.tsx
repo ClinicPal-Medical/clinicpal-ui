@@ -12,7 +12,7 @@ function AppSidebarProvider({
     <SidebarProvider>
       <div className="page">
         <AppSidebar />
-        <SidebarInset className="gap-8">
+        <SidebarInset>
           <SiteHeader />
           {children}
         </SidebarInset>
