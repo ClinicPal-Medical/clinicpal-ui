@@ -61,14 +61,21 @@ const RenderField = ({
     case FormFieldTypes.TEXTAREA:
       return (
         <FormControl>
-          <Textarea {...field} placeholder={placeholder} />
+          <Textarea
+            {...field}
+            placeholder={placeholder}
+            className={cn(
+              "focus-visible:border-input focus-visible:ring-0 focus-visible:ring-offset-0",
+              className,
+            )}
+          />
         </FormControl>
       );
     case FormFieldTypes.SELECT:
       return (
         <Select onValueChange={field.onChange} defaultValue={field.value}>
           <FormControl>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full focus-visible:border-input focus-visible:ring-0 focus-visible:ring-offset-0">
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
           </FormControl>
@@ -111,7 +118,7 @@ function CustomFormField(props: CustomFormFieldProps) {
       rules={rules}
       render={({ field }) => (
         <FormItem className="flex-1">
-          {label && <FormLabel>{label}</FormLabel>}
+          {label && <FormLabel className="data-[error=true]:text-foreground">{label}</FormLabel>}
           <RenderField field={field} form={form} props={props} />
           {(type === FormFieldTypes.PHONEINPUT || description) && (
             <FormDescription className="text-xs">
