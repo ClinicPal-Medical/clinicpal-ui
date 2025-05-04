@@ -49,6 +49,13 @@ function LoginPage() {
                   label="Email"
                   placeholder="Enter your email"
                   control={form.control}
+                  rules={{
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email address",
+                    },
+                  }}
                 />
                 <CustomFormField
                   type={FormFieldTypes.INPUT}
@@ -56,6 +63,9 @@ function LoginPage() {
                   label="Password"
                   placeholder="Enter your password"
                   control={form.control}
+                  rules={{
+                    required: "Password is required",
+                  }}
                 />
               </form>
             </Form>

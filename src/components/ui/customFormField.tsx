@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React from "react";
 import { E164Number } from "libphonenumber-js";
-import { FormControl, FormDescription, FormField, FormItem, FormLabel } from "./form";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./form";
 import { Input } from "./input";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,11 +12,13 @@ import PhoneInput from "react-phone-number-input";
 import { Textarea } from "./textarea";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./select";
 import { FormFieldTypes } from "@/lib/enums";
+import { RegisterOptions } from "react-hook-form";
 
 interface CustomFormFieldProps {
   type: FormFieldTypes;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   control: any;
+  rules?: RegisterOptions;
   name: string;
   label?: string;
   placeholder?: string;
@@ -25,7 +28,6 @@ interface CustomFormFieldProps {
   children?: React.ReactNode;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const RenderField = ({ field, props }: { field: any; props: CustomFormFieldProps }) => {
   const { type, placeholder, icon, className, children, name } = props;
   const Icon = icon;
@@ -53,16 +55,14 @@ const RenderField = ({ field, props }: { field: any; props: CustomFormFieldProps
       );
     case FormFieldTypes.SELECT:
       return (
-        <FormControl>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder={placeholder} />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent className="w-fit">{children}</SelectContent>
-          </Select>
-        </FormControl>
+        <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <FormControl>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+          </FormControl>
+          <SelectContent className="w-fit">{children}</SelectContent>
+        </Select>
       );
     case FormFieldTypes.PHONEINPUT:
       return (
@@ -86,11 +86,13 @@ const RenderField = ({ field, props }: { field: any; props: CustomFormFieldProps
 };
 
 function CustomFormField(props: CustomFormFieldProps) {
-  const { control, name, label, description, type } = props;
+  const { control, name, label, description, type, rules } = props;
+
   return (
     <FormField
       control={control}
       name={name}
+      rules={rules}
       render={({ field }) => (
         <FormItem className="flex-1">
           {label && <FormLabel>{label}</FormLabel>}
@@ -100,6 +102,7 @@ function CustomFormField(props: CustomFormFieldProps) {
               {description ? description : "Format: 70 123 4567"}
             </FormDescription>
           )}
+          <FormMessage className="text-destructive" />
         </FormItem>
       )}
     />

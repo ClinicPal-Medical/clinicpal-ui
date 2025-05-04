@@ -62,6 +62,13 @@ function RegisterPage() {
                     control={form.control}
                     label="First Name"
                     placeholder="Enter your first name"
+                    rules={{
+                      required: "First name is required",
+                      minLength: {
+                        value: 2,
+                        message: "First name must be at least 2 characters long",
+                      },
+                    }}
                   />
                   <CustomFormField
                     type={FormFieldTypes.INPUT}
@@ -69,6 +76,13 @@ function RegisterPage() {
                     control={form.control}
                     label="Last Name"
                     placeholder="Enter your last name"
+                    rules={{
+                      required: "Last name is required",
+                      minLength: {
+                        value: 2,
+                        message: "Last name must be at least 2 characters long",
+                      },
+                    }}
                   />
                 </div>
                 <CustomFormField
@@ -77,6 +91,13 @@ function RegisterPage() {
                   control={form.control}
                   label="Email"
                   placeholder="Enter your email address"
+                  rules={{
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      message: "Invalid email address",
+                    },
+                  }}
                 />
                 <CustomFormField
                   type={FormFieldTypes.PHONEINPUT}
@@ -84,6 +105,13 @@ function RegisterPage() {
                   control={form.control}
                   label="Contact Number"
                   placeholder="70 123 4567"
+                  rules={{
+                    required: "Contact number is required",
+                    pattern: {
+                      value: /^(?:\+94|0)?7\d{8}$/,
+                      message: "Invalid contact number",
+                    },
+                  }}
                 />
                 <CustomFormField
                   type={FormFieldTypes.TEXTAREA}
@@ -91,6 +119,13 @@ function RegisterPage() {
                   control={form.control}
                   label="Address"
                   placeholder="10, Main Street, Colombo"
+                  rules={{
+                    required: "Address is required",
+                    minLength: {
+                      value: 10,
+                      message: "Address must be at least 10 characters long",
+                    },
+                  }}
                 />
                 <CustomFormField
                   type={FormFieldTypes.SELECT}
@@ -98,6 +133,9 @@ function RegisterPage() {
                   control={form.control}
                   label="Role"
                   placeholder="Select your role"
+                  rules={{
+                    required: "Role is required",
+                  }}
                 >
                   <SelectItem value="doctor">Doctor</SelectItem>
                   <SelectItem value="staff">Staff</SelectItem>
@@ -109,6 +147,13 @@ function RegisterPage() {
                     control={form.control}
                     label="Password"
                     placeholder="Enter a password"
+                    rules={{
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must be at least 6 characters long",
+                      },
+                    }}
                   />
                   <CustomFormField
                     type={FormFieldTypes.INPUT}
@@ -116,6 +161,14 @@ function RegisterPage() {
                     control={form.control}
                     label="Confirm Password"
                     placeholder="Re-enter your password"
+                    rules={{
+                      required: "Confirm password is required",
+                      validate: (value) => {
+                        if (value !== form.getValues("password")) {
+                          return "Passwords do not match";
+                        }
+                      },
+                    }}
                   />
                 </div>
               </form>
