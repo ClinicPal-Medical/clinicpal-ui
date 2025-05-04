@@ -184,3 +184,12 @@
     @apply w-full h-screen min-h-full flex;
   }
 }
+
+/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+.PhoneInputInput {
+  @apply outline-none bg-transparent;
+}
+
+.PhoneInputInput::placeholder {
+  @apply text-muted-foreground;
+}
