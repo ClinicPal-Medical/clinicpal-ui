@@ -48,7 +48,7 @@ function LoginPage() {
                   name="email"
                   label="Email"
                   placeholder="Enter your email"
-                  control={form.control}
+                  form={form}
                   rules={{
                     required: "Email is required",
                     pattern: {
@@ -62,7 +62,7 @@ function LoginPage() {
                   name="password"
                   label="Password"
                   placeholder="Enter your password"
-                  control={form.control}
+                  form={form}
                   rules={{
                     required: "Password is required",
                   }}

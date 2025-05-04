@@ -17,7 +17,7 @@ import { RegisterOptions } from "react-hook-form";
 interface CustomFormFieldProps {
   type: FormFieldTypes;
 
-  control: any;
+  form?: any;
   rules?: RegisterOptions;
   name: string;
   label?: string;
@@ -28,14 +28,25 @@ interface CustomFormFieldProps {
   children?: React.ReactNode;
 }
 
-const RenderField = ({ field, props }: { field: any; props: CustomFormFieldProps }) => {
+const RenderField = ({
+  field,
+  props,
+  form,
+}: {
+  field: any;
+  props: CustomFormFieldProps;
+  form: any;
+}) => {
   const { type, placeholder, icon, className, children, name } = props;
   const Icon = icon;
 
   switch (type) {
     case FormFieldTypes.INPUT:
       return (
-        <div className="flex bg-transparent items-center rounded-md border border-input">
+        <div
+          className="flex bg-transparent items-center rounded-md border border-input aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+          aria-invalid={form?.formState.errors[name] ? true : false}
+        >
           {Icon && <Icon className="pl-2" />}
           <FormControl>
             <Input
@@ -74,7 +85,12 @@ const RenderField = ({ field, props }: { field: any; props: CustomFormFieldProps
             value={field.value as E164Number | undefined}
             onChange={field.onChange}
             placeholder={placeholder}
-            className="mt-2 h-9 px-3 py-1 rounded-md text-sm border bg-transparent placeholder:text-muted-foreground border-input focus-visible:border-none"
+            aria-invalid={form?.formState.errors[name] ? true : false}
+            className={cn(
+              "mt-2 h-9 px-3 py-1 rounded-md text-sm border bg-transparent placeholder:text-muted-foreground border-input focus-visible:border-none",
+              form?.formState.errors[name] &&
+                "border-destructive ring-destructive/20 dark:ring-destructive/40",
+            )}
           />
         </FormControl>
       );
@@ -86,17 +102,17 @@ const RenderField = ({ field, props }: { field: any; props: CustomFormFieldProps
 };
 
 function CustomFormField(props: CustomFormFieldProps) {
-  const { control, name, label, description, type, rules } = props;
+  const { name, label, description, type, rules, form } = props;
 
   return (
     <FormField
-      control={control}
+      control={form.control}
       name={name}
       rules={rules}
       render={({ field }) => (
         <FormItem className="flex-1">
           {label && <FormLabel>{label}</FormLabel>}
-          <RenderField field={field} props={props} />
+          <RenderField field={field} form={form} props={props} />
           {(type === FormFieldTypes.PHONEINPUT || description) && (
             <FormDescription className="text-xs">
               {description ? description : "Format: 70 123 4567"}

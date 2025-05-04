@@ -59,7 +59,7 @@ function RegisterPage() {
                   <CustomFormField
                     type={FormFieldTypes.INPUT}
                     name="firstName"
-                    control={form.control}
+                    form={form}
                     label="First Name"
                     placeholder="Enter your first name"
                     rules={{
@@ -73,7 +73,7 @@ function RegisterPage() {
                   <CustomFormField
                     type={FormFieldTypes.INPUT}
                     name="lastName"
-                    control={form.control}
+                    form={form}
                     label="Last Name"
                     placeholder="Enter your last name"
                     rules={{
@@ -88,7 +88,7 @@ function RegisterPage() {
                 <CustomFormField
                   type={FormFieldTypes.INPUT}
                   name="email"
-                  control={form.control}
+                  form={form}
                   label="Email"
                   placeholder="Enter your email address"
                   rules={{
@@ -102,7 +102,7 @@ function RegisterPage() {
                 <CustomFormField
                   type={FormFieldTypes.PHONEINPUT}
                   name="contact"
-                  control={form.control}
+                  form={form}
                   label="Contact Number"
                   placeholder="70 123 4567"
                   rules={{
@@ -116,7 +116,7 @@ function RegisterPage() {
                 <CustomFormField
                   type={FormFieldTypes.TEXTAREA}
                   name="address"
-                  control={form.control}
+                  form={form}
                   label="Address"
                   placeholder="10, Main Street, Colombo"
                   rules={{
@@ -130,7 +130,7 @@ function RegisterPage() {
                 <CustomFormField
                   type={FormFieldTypes.SELECT}
                   name="role"
-                  control={form.control}
+                  form={form}
                   label="Role"
                   placeholder="Select your role"
                   rules={{
@@ -144,7 +144,7 @@ function RegisterPage() {
                   <CustomFormField
                     type={FormFieldTypes.INPUT}
                     name="password"
-                    control={form.control}
+                    form={form}
                     label="Password"
                     placeholder="Enter a password"
                     rules={{
@@ -158,7 +158,7 @@ function RegisterPage() {
                   <CustomFormField
                     type={FormFieldTypes.INPUT}
                     name="confirmPassword"
-                    control={form.control}
+                    form={form}
                     label="Confirm Password"
                     placeholder="Re-enter your password"
                     rules={{
