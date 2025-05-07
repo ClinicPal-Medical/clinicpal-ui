@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { E164Number } from "libphonenumber-js";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./form";
 import { Input } from "./input";
-import { LucideIcon } from "lucide-react";
+import { CalendarIcon, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
@@ -13,6 +13,11 @@ import { Textarea } from "./textarea";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./select";
 import { FormFieldTypes } from "@/lib/enums";
 import { RegisterOptions } from "react-hook-form";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Button } from "./button";
+import { Calendar } from "./calendar";
+import { format } from "date-fns";
+import { DateRange } from "react-day-picker";
 
 interface CustomFormFieldProps {
   type: FormFieldTypes;
@@ -39,6 +44,7 @@ const RenderField = ({
 }) => {
   const { type, placeholder, icon, className, children, name } = props;
   const Icon = icon;
+  const [date, setDate] = useState<DateRange | undefined>();
 
   switch (type) {
     case FormFieldTypes.INPUT:
@@ -102,7 +108,43 @@ const RenderField = ({
         </FormControl>
       );
     case FormFieldTypes.DATEPICKER:
-      return <Input {...field} type="date" placeholder={placeholder} />;
+      return (
+        <Popover>
+          <PopoverTrigger asChild className="bg-transparent">
+            <Button
+              id="date"
+              variant={"outline"}
+              className={cn(
+                "w-[300px] justify-between text-left font-normal",
+                !date && "text-muted-foreground",
+              )}
+            >
+              {date?.from ? (
+                date.to ? (
+                  <>
+                    {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+                  </>
+                ) : (
+                  format(date.from, "LLL dd, y")
+                )
+              ) : (
+                <span>{placeholder || "Pick a date"}</span>
+              )}
+              <CalendarIcon />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              initialFocus
+              mode="range"
+              defaultMonth={date?.from}
+              selected={date}
+              onSelect={setDate}
+              numberOfMonths={2}
+            />
+          </PopoverContent>
+        </Popover>
+      );
     default:
       return null;
   }
