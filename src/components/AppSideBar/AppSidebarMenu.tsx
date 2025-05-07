@@ -6,7 +6,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 function AppSidebarMenu({
@@ -22,14 +24,16 @@ function AppSidebarMenu({
   }>;
   className?: string;
 }) {
+  const pathname: string = usePathname();
+
   return (
-    <SidebarGroup className={`${className}`}>
+    <SidebarGroup>
       {menuLabel && <SidebarGroupLabel>{menuLabel}</SidebarGroupLabel>}
       <SidebarGroupContent>
-        <SidebarMenu>
-          {menuItems.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
+        <SidebarMenu className={cn(className)}>
+          {menuItems.map((item, index) => (
+            <SidebarMenuItem key={index}>
+              <SidebarMenuButton asChild className="min-h-[3rem]" isActive={pathname === item.url}>
                 <a href={item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

@@ -7,10 +7,19 @@ import {
   SidebarHeader,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { CalendarPlus, HelpCircleIcon, Home, Plus, Search, User, Wrench } from "lucide-react";
+import {
+  CalendarDays,
+  HelpCircleIcon,
+  Home,
+  NotebookPen,
+  Receipt,
+  Tablets,
+  User,
+  UsersRound,
+  Wrench,
+} from "lucide-react";
 import React from "react";
 import UserManager from "./UserManager";
-import CollapsibleSidebarMenu from "./CollapsibleSidebarMenu";
 import AppSidebarMenu from "./AppSidebarMenu";
 import Logo from "@/app/Logo";
 
@@ -22,61 +31,29 @@ function AppSidebar() {
       icon: Home,
     },
     {
-      title: "New Appointment",
-      url: "/appointments/new",
-      icon: CalendarPlus,
-    },
-  ];
-
-  const patientsMenuItems = [
-    {
-      title: "Search Patient",
-      url: "#",
-      icon: Search,
+      title: "Appointments",
+      url: "/appointments",
+      icon: CalendarDays,
     },
     {
-      title: "Add Patient",
-      url: "/patients/new",
-      icon: Plus,
-    },
-  ];
-
-  const doctorsMenuItems = [
-    {
-      title: "Search Doctor",
-      url: "#",
-      icon: Search,
+      title: "Patients",
+      url: "/patients",
+      icon: UsersRound,
     },
     {
-      title: "Add Doctor",
-      url: "#",
-      icon: Plus,
-    },
-  ];
-
-  const appointmentsMenuItems = [
-    {
-      title: "Search Appointment",
-      url: "#",
-      icon: Search,
+      title: "Prescriptions",
+      url: "/prescriptions",
+      icon: NotebookPen,
     },
     {
-      title: "New Appointment",
-      url: "/appointments/new",
-      icon: Plus,
-    },
-  ];
-
-  const inventoryMenuItems = [
-    {
-      title: "Search Inventory",
-      url: "#",
-      icon: Search,
+      title: "Inventory",
+      url: "/inventory",
+      icon: Tablets,
     },
     {
-      title: "Add Inventory",
-      url: "#",
-      icon: Plus,
+      title: "Billing",
+      url: "/billing",
+      icon: Receipt,
     },
   ];
 
@@ -105,15 +82,11 @@ function AppSidebar() {
         <Logo width="3em" />
         <h1 className="text-3xl font-bold">ClinicPal</h1>
       </SidebarHeader>
+      <SidebarSeparator />
       <SidebarContent>
-        <AppSidebarMenu menuLabel="Quick Links" menuItems={quickLinks} />
-        <SidebarSeparator />
-        <CollapsibleSidebarMenu menuLabel="Patients" menuItems={patientsMenuItems} />
-        <CollapsibleSidebarMenu menuLabel="Doctors" menuItems={doctorsMenuItems} />
-        <CollapsibleSidebarMenu menuLabel="Appointments" menuItems={appointmentsMenuItems} />
-        <CollapsibleSidebarMenu menuLabel="Inventory" menuItems={inventoryMenuItems} />
-        <SidebarSeparator />
-        <AppSidebarMenu menuItems={secondaryMenuItems} className="mt-auto" />
+        <AppSidebarMenu menuItems={quickLinks} />
+        <SidebarSeparator className="mt-auto" />
+        <AppSidebarMenu menuItems={secondaryMenuItems} />
         <SidebarSeparator />
       </SidebarContent>
       <SidebarFooter>
