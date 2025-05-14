@@ -6,16 +6,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import CustomFormField from "@/components/ui/customFormField";
 import { Form } from "@/components/ui/form";
 import { SelectItem } from "@/components/ui/select";
-import {
-  Timeline,
-  TimelineDescription,
-  TimelineHeader,
-  TimelineItem,
-  TimelineTime,
-  TimelineTitle,
-} from "@/components/ui/timeline";
 import { FormFieldTypes } from "@/lib/enums";
-import { TimelineItemType } from "@/lib/types";
 import { ListFilter, RotateCcw, Search } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -42,39 +33,6 @@ function Appointments() {
       },
     },
   });
-
-  const timelineData: TimelineItemType[] = [
-    {
-      id: 1,
-      title: "John Doe",
-      description: "General Appointment",
-      time: "04:00 PM",
-    },
-    {
-      id: 2,
-      title: "William Smith",
-      description: "Lab Tests Appointment",
-      time: "04:30 PM",
-    },
-    {
-      id: 3,
-      title: "Jane Doe",
-      description: "General Appointment",
-      time: "05:00 PM",
-    },
-    {
-      id: 4,
-      title: "Jane Doe",
-      description: "General Appointment",
-      time: "05:15 PM",
-    },
-    {
-      id: 5,
-      title: "Naveen Satanarachchi",
-      description: "General Appointment",
-      time: "05:30 PM",
-    },
-  ];
 
   return (
     <AppSidebarProvider>
@@ -141,19 +99,6 @@ function Appointments() {
           <Card className="w-[75%] mx-auto"></Card>
           <Card className="flex-1 mx-auto">
             <CardHeader className="font-semibold text-xl">Today&apos;s Schedule</CardHeader>
-            <Timeline className="w-fit mx-auto">
-              {timelineData.map((item) => (
-                <TimelineItem key={item.id}>
-                  <TimelineHeader>
-                    <TimelineTime>{item.time}</TimelineTime>
-                  </TimelineHeader>
-                  <TimelineTitle>{item.title}</TimelineTitle>
-                  {item.description && (
-                    <TimelineDescription>{item.description}</TimelineDescription>
-                  )}
-                </TimelineItem>
-              ))}
-            </Timeline>
           </Card>
         </div>
       </div>
