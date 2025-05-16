@@ -35,7 +35,18 @@ import {
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const tableData = {
+interface AppointmentsTableData {
+  headers: string[];
+  rows: {
+    patient: string;
+    doctor: string;
+    date: string;
+    type: string;
+    status: string;
+  }[];
+}
+
+const tableData: AppointmentsTableData = {
   headers: ["Patient", "Doctor", "Date", "Type", "Status", "Actions"],
   rows: [
     {
@@ -101,12 +112,13 @@ function Appointments() {
 
     const filteredData = tableData.rows.filter((row) => {
       return (
-        row.patient.toLowerCase().startsWith(searchQuery.toLowerCase()) &&
+        (searchQuery === "" || row.patient.toLowerCase().startsWith(searchQuery.toLowerCase())) &&
         (appointmentType.toLowerCase().includes("all") ||
           row.type.toLowerCase().includes(appointmentType.toLowerCase())) &&
         (appointmentStatus.toLowerCase().includes("all") ||
           row.status.toLowerCase().includes(appointmentStatus.toLowerCase())) &&
         (dateRange == undefined ||
+          dateRange.from == undefined ||
           toLocalDate(row.date).getTime() === new Date(dateRange.from).getTime() ||
           (toLocalDate(row.date) >= new Date(dateRange.from) &&
             toLocalDate(row.date) <= new Date(dateRange.to)))
@@ -240,7 +252,7 @@ function Appointments() {
                         colSpan={data.headers.length}
                         className="text-center text-muted-foreground"
                       >
-                        No appointments found
+                        No results found
                       </TableCell>
                     </TableRow>
                   )}
