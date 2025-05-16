@@ -77,6 +77,13 @@ const tableData: AppointmentsTableData = {
       type: "Lab Test",
       status: "Scheduled",
     },
+    {
+      patient: "Charlie Brown",
+      doctor: "Dr. Green",
+      date: "2025-05-03",
+      type: "General Appointment",
+      status: "Cancelled",
+    },
   ],
 };
 
@@ -112,7 +119,9 @@ function Appointments() {
 
     const filteredData = tableData.rows.filter((row) => {
       return (
-        (searchQuery === "" || row.patient.toLowerCase().startsWith(searchQuery.toLowerCase())) &&
+        (searchQuery === "" ||
+          row.patient.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+          row.doctor.toLowerCase().split(". ")[1].startsWith(searchQuery.toLowerCase())) &&
         (appointmentType.toLowerCase().includes("all") ||
           row.type.toLowerCase().includes(appointmentType.toLowerCase())) &&
         (appointmentStatus.toLowerCase().includes("all") ||
