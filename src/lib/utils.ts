@@ -22,3 +22,8 @@ export function getCurrentDate() {
 
   return weekday.concat(formattedToday.split(" ").slice(1).join(" "));
 }
+
+export const toLocalDate = (str: string) => {
+  const [year, month, day] = str.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
