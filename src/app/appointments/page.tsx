@@ -4,13 +4,6 @@ import AppSidebarProvider from "@/components/AppSideBar/AppSidebarProvider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import CustomFormField from "@/components/ui/customFormField";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Form } from "@/components/ui/form";
 import { SelectItem } from "@/components/ui/select";
 import {
@@ -23,15 +16,7 @@ import {
 } from "@/components/ui/table";
 import { FormFieldTypes } from "@/lib/enums";
 import { toLocalDate } from "@/lib/utils";
-import {
-  CircleX,
-  EllipsisVertical,
-  Eye,
-  ListFilter,
-  Pencil,
-  RotateCcw,
-  Search,
-} from "lucide-react";
+import { CircleX, ListFilter, Pencil, RotateCcw, Search } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -47,7 +32,7 @@ interface AppointmentsTableData {
 }
 
 const tableData: AppointmentsTableData = {
-  headers: ["Patient", "Doctor", "Date", "Type", "Status", "Actions"],
+  headers: ["Patient", "Doctor", "Date", "Type", "Status"],
   rows: [
     {
       patient: "John Doe",
@@ -218,40 +203,26 @@ function Appointments() {
                     {data.headers.map((header, idx) => (
                       <TableHead key={idx}>{header}</TableHead>
                     ))}
+                    <TableHead className="text-center">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.rows.map((row, idx) => (
-                    <TableRow key={idx} data-role="data">
-                      <TableCell>{row.patient}</TableCell>
-                      <TableCell>{row.doctor}</TableCell>
-                      <TableCell>{row.date}</TableCell>
-                      <TableCell>{row.type}</TableCell>
-                      <TableCell>{row.status}</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant={"ghost"}>
-                              <EllipsisVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent side="bottom">
-                            <DropdownMenuGroup className="flex flex-col gap-2">
-                              <DropdownMenuItem className="cursor-pointer">
-                                <Eye />
-                                View
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className="cursor-pointer">
-                                <Pencil />
-                                Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className="cursor-pointer" variant="destructive">
-                                <CircleX />
-                                Cancel
-                              </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                  {data.rows.map((row, rowIdx) => (
+                    <TableRow key={rowIdx}>
+                      {Object.values(row).map((cell, cellIdx) => (
+                        <TableCell key={cellIdx}>{cell}</TableCell>
+                      ))}
+                      <TableCell className="text-center">
+                        <Button variant="ghost" size="icon">
+                          <Pencil />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive hover:text-destructive hover:bg-destructive/30"
+                        >
+                          <CircleX />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
