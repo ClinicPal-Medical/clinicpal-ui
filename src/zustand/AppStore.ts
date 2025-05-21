@@ -8,6 +8,8 @@ export interface AppStore {
   clinic: Clinic | null;
   setClinic: (clinic: Clinic) => void;
   logOut: () => void;
+  isLoading: boolean;
+  setLoading: (isLoading: boolean) => void;
 }
 
 export const useAppStore = create<AppStore>()(
@@ -15,10 +17,12 @@ export const useAppStore = create<AppStore>()(
     persist(
       (set) => ({
         user: null,
-        setUser: (user) => set({ user }),
+        setUser: (user) => set({ user }, false, "SET_USER"),
         clinic: null,
-        setClinic: (clinic) => set({ clinic }),
-        logOut: () => set({ user: null }),
+        setClinic: (clinic) => set({ clinic }, false, "SET_CLINIC"),
+        logOut: () => set({ user: null }, false, "LOG_OUT"),
+        isLoading: false,
+        setLoading: (isLoading) => set({ isLoading }, false, "SET_LOADING"),
       }),
       {
         name: "app-store",

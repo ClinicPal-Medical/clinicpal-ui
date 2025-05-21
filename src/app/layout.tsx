@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import HydrationGuard from "@/components/HydrationGuard";
 
 export const metadata: Metadata = {
   title: "ClinicPal",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>{children}</body>
+      <body className={`antialiased`}>
+        <HydrationGuard>{children}</HydrationGuard>
+      </body>
     </html>
   );
 }
