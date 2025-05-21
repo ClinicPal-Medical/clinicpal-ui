@@ -14,7 +14,6 @@ import {
   NotebookPen,
   Receipt,
   Tablets,
-  User,
   UsersRound,
   Wrench,
 } from "lucide-react";
@@ -22,6 +21,7 @@ import React from "react";
 import UserManager from "./UserManager";
 import AppSidebarMenu from "./AppSidebarMenu";
 import Logo from "@/app/Logo";
+import { useAppStore } from "@/zustand/AppStore";
 
 function AppSidebar() {
   const quickLinks = [
@@ -70,10 +70,11 @@ function AppSidebar() {
     },
   ];
 
+  const userInState = useAppStore((state) => state.user);
+
   const user = {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: User,
+    name: `${userInState?.firstName} ${userInState?.lastName}`,
+    email: userInState?.email,
   };
 
   return (
