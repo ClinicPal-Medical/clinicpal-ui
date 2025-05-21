@@ -4,16 +4,22 @@ import { Button } from "@/components/ui/button";
 import CustomFormField from "@/components/ui/customFormField";
 import { Form } from "@/components/ui/form";
 import { FormFieldTypes } from "@/lib/enums";
+import { User } from "@/lib/types";
+import { useAppStore } from "@/zustand/AppStore";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { loginUser } from "./actions";
 
-interface LoginFormInputs {
+export interface LoginFormInputs {
   email: string;
   password: string;
 }
 
 function LoginPage() {
+  const setUser = useAppStore((state) => state.setUser);
+  const router = useRouter();
   const form = useForm<LoginFormInputs>({
     defaultValues: {
       email: "",
@@ -21,9 +27,12 @@ function LoginPage() {
     },
   });
 
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log(data);
+  const onSubmit = async (data: LoginFormInputs) => {
+    const user: User = await loginUser(data);
+    setUser(user);
+    router.push("/dashboard");
   };
+
   return (
     <div className="page bg-muted">
       <div className="bg-card text-card-foreground rounded-xl border flex w-[70%] h-[80%] m-auto gap-4 shadow-sm">

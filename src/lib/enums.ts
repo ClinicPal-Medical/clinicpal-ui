@@ -7,3 +7,9 @@ export enum FormFieldTypes {
   PHONEINPUT = "phoneInput",
   DATEPICKER = "datePicker",
 }
+
+export enum UserRoles {
+  ADMIN = "admin",
+  DOCTOR = "doctor",
+  STAFF = "staff",
+}
