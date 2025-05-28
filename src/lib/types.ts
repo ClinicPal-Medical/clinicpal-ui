@@ -1,14 +1,14 @@
 import { UserRoles } from "./enums";
 
 export interface User {
-  id: string;
+  userId: string;
   firstName: string;
   lastName: string;
+  title: string;
   email: string;
-  phone: string;
+  contactNumber: string;
+  address: string;
   role: UserRoles;
-  clinicId: string;
-  authToken: string;
 }
 
 export interface Clinic {
@@ -18,4 +18,11 @@ export interface Clinic {
   phone: string;
   email: string;
   website: string;
+}
+
+export interface ApiErrorResponse {
+  status: number;
+  error: string;
+  description: string;
+  path: string;
 }

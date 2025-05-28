@@ -19,6 +19,9 @@ export interface LoginFormInputs {
 
 function LoginPage() {
   const setUser = useAppStore((state) => state.setUser);
+  const isLoading = useAppStore((state) => state.isLoading);
+  const setLoading = useAppStore((state) => state.setLoading);
+
   const router = useRouter();
   const form = useForm<LoginFormInputs>({
     defaultValues: {
@@ -28,9 +31,15 @@ function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormInputs) => {
-    const user: User = await loginUser(data);
-    setUser(user);
-    router.push("/dashboard");
+    setLoading(true);
+    try {
+      const user: User = await loginUser(data);
+      setUser(user);
+      router.push("/dashboard");
+    } catch (error) {
+      alert(error);
+    }
+    setLoading(false);
   };
 
   return (

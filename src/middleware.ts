@@ -9,7 +9,7 @@ export default function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (!token || token?.value !== "1234567890") {
+  if (!token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

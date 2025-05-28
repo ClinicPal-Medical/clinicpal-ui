@@ -1,29 +1,34 @@
 "use server";
 
-import { User } from "@/lib/types";
+import { ApiErrorResponse, User } from "@/lib/types";
 import { LoginFormInputs } from "./page";
-import { UserRoles } from "@/lib/enums";
+import { AxiosError, AxiosResponse } from "axios";
 import { cookies } from "next/headers";
+import { POST } from "@/lib/api";
 
-export async function loginUser({ email }: LoginFormInputs): Promise<User> {
-  const user: User = {
-    id: "1",
-    firstName: "John",
-    lastName: "Doe",
+export async function loginUser({ email, password }: LoginFormInputs): Promise<User> {
+  const payload = {
     email: email,
-    phone: "1234567890",
-    role: UserRoles.ADMIN,
-    clinicId: "1",
-    authToken: "1234567890",
+    password: password,
   };
 
-  (await cookies()).set("token", user.authToken, {
-    httpOnly: true,
-    secure: true,
-    path: "/",
-    maxAge: 60 * 60 * 24, // 1 day
-    sameSite: "lax",
-  });
+  try {
+    const response: AxiosResponse = await POST("/auth/login", payload);
+    const user: User = response?.data;
 
-  return user;
+    if (user && user.userId) {
+      (await cookies()).set("token", user?.userId, {
+        httpOnly: true,
+        secure: true,
+        path: "/",
+        maxAge: 60 * 60 * 24, // 1 day
+        sameSite: "lax",
+      });
+      return user;
+    }
+    throw new Error("Login failed. User data is missing or invalid.");
+  } catch (error) {
+    const axiosError = error as AxiosError<ApiErrorResponse>;
+    throw new Error(axiosError?.response?.data.description || "Login failed");
+  }
 }
