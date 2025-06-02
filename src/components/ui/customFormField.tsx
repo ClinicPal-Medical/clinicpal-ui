@@ -30,6 +30,8 @@ interface CustomFormFieldProps {
   icon?: LucideIcon;
   className?: string;
   children?: React.ReactNode;
+  datePickerMode?: "single" | "range";
+  numberOfMonths?: number;
 }
 
 function CustomFormField(props: CustomFormFieldProps) {
@@ -44,7 +46,8 @@ function CustomFormField(props: CustomFormFieldProps) {
     props: CustomFormFieldProps;
     form: any;
   }) => {
-    const { type, placeholder, icon, className, children, name } = props;
+    const { type, placeholder, icon, className, children, name, datePickerMode, numberOfMonths } =
+      props;
     const Icon = icon;
 
     switch (type) {
@@ -113,44 +116,45 @@ function CustomFormField(props: CustomFormFieldProps) {
         );
       case FormFieldTypes.DATEPICKER:
         return (
-          <Popover>
-            <PopoverTrigger asChild className="bg-transparent">
-              <Button
-                id="date"
-                variant={"outline"}
-                className={cn(
-                  "w-full justify-between text-left font-normal",
-                  !field.value && "text-muted-foreground",
-                )}
-              >
-                {field.value?.from ? (
-                  field.value.to ? (
-                    <>
-                      {format(field.value.from, "LLL dd, y")} -{" "}
-                      {format(field.value.to, "LLL dd, y")}
-                    </>
+          <FormControl>
+            <Popover key={name}>
+              <PopoverTrigger asChild className="bg-transparent">
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-between text-left font-normal",
+                    !field.value && "text-muted-foreground",
+                  )}
+                >
+                  {field.value?.from ? (
+                    field.value.to ? (
+                      <>
+                        {format(field.value.from, "LLL dd, y")} -{" "}
+                        {format(field.value.to, "LLL dd, y")}
+                      </>
+                    ) : (
+                      format(field.value.from, "LLL dd, y")
+                    )
                   ) : (
-                    format(field.value.from, "LLL dd, y")
-                  )
-                ) : (
-                  <span>{placeholder || "Pick a date"}</span>
-                )}
-                <CalendarIcon />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={field.value?.from}
-                selected={field.value}
-                onSelect={field.onChange}
-                numberOfMonths={2}
-                fromDate={field.value?.from}
-                toDate={field.value?.to}
-              />
-            </PopoverContent>
-          </Popover>
+                    <span>{placeholder || "Pick a date"}</span>
+                  )}
+                  <CalendarIcon />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0">
+                <Calendar
+                  initialFocus
+                  mode={datePickerMode || "single"}
+                  defaultMonth={field.value?.to || field.value?.from}
+                  selected={field.value}
+                  onSelect={field.onChange}
+                  numberOfMonths={numberOfMonths || 1}
+                  fromDate={field.value?.from}
+                  toDate={field.value?.to}
+                />
+              </PopoverContent>
+            </Popover>
+          </FormControl>
         );
       default:
         return null;
