@@ -4,6 +4,16 @@ import AppSidebarProvider from "@/components/AppSideBar/AppSidebarProvider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import CustomFormField from "@/components/ui/customFormField";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { SelectItem } from "@/components/ui/select";
 import {
@@ -19,6 +29,7 @@ import { toLocalDate } from "@/lib/utils";
 import { CircleX, ListFilter, Pencil, RotateCcw, Search } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import AppointmentForm from "./AppointmentForm";
 
 interface AppointmentsTableData {
   headers: string[];
@@ -72,7 +83,7 @@ const tableData: AppointmentsTableData = {
   ],
 };
 
-interface AppointmentFormInputs {
+interface searchFiltersInputs {
   searchQuery: string;
   appointmentType: string;
   appointmentStatus: string;
@@ -82,10 +93,17 @@ interface AppointmentFormInputs {
   };
 }
 
+interface AppointmentFormInputs {
+  patient: string;
+  doctor: string;
+  type: string;
+  appointmentDate: Date;
+}
+
 function Appointments() {
   const [data, setData] = useState(tableData);
 
-  const form = useForm<AppointmentFormInputs>({
+  const searchFiltersForm = useForm<searchFiltersInputs>({
     defaultValues: {
       searchQuery: "",
       appointmentType: "all",
@@ -97,7 +115,23 @@ function Appointments() {
     },
   });
 
-  const { getValues, reset } = form;
+  const appointmentForm = useForm<AppointmentFormInputs>({
+    defaultValues: {
+      patient: "",
+      doctor: "",
+      type: "general",
+      appointmentDate: undefined,
+    },
+  });
+
+  const { getValues, reset } = searchFiltersForm;
+
+  const { handleSubmit: handleAppointmentFormSubmit, reset: resetAppointmentForm } =
+    appointmentForm;
+
+  const onAppointmentFormSubmit = (data: AppointmentFormInputs) => {
+    console.log(data);
+  };
 
   const applyFilters = () => {
     const { searchQuery, appointmentStatus, appointmentType, dateRange } = getValues();
@@ -139,25 +173,60 @@ function Appointments() {
             <p className="font-extralight text-muted-foreground">Manage your appointments</p>
           </div>
           <div>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              + New Appointment
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                  + New Appointment
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-semibold font-stretch-105%">
+                    New Appointment
+                  </DialogTitle>
+                  <DialogDescription className="font-extralight text-muted-foreground">
+                    Create a new appointment
+                  </DialogDescription>
+                </DialogHeader>
+                <AppointmentForm form={appointmentForm} className="my-5" />
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="secondary" onClick={() => resetAppointmentForm()}>
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button
+                    type="submit"
+                    variant="default"
+                    onClick={handleAppointmentFormSubmit(onAppointmentFormSubmit)}
+                  >
+                    Create
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
         <div className="w-[95%] mx-auto">
           <Card>
             <div className="w-[95%] mx-auto flex flex-col md:flex-row gap-4">
-              <Form {...form}>
+              <Form {...searchFiltersForm}>
                 <CustomFormField
-                  form={form}
+                  form={searchFiltersForm}
                   placeholder="Search by patient or doctor name"
                   icon={Search}
                   type={FormFieldTypes.INPUT}
                   name="searchQuery"
                 />
-                <CustomFormField form={form} type={FormFieldTypes.DATEPICKER} name="dateRange" />
                 <CustomFormField
-                  form={form}
+                  form={searchFiltersForm}
+                  type={FormFieldTypes.DATEPICKER}
+                  datePickerMode="range"
+                  numberOfMonths={2}
+                  name="dateRange"
+                />
+                <CustomFormField
+                  form={searchFiltersForm}
                   type={FormFieldTypes.SELECT}
                   placeholder="All Types"
                   name="appointmentType"
@@ -167,7 +236,7 @@ function Appointments() {
                   <SelectItem value="lab">Lab Test</SelectItem>
                 </CustomFormField>
                 <CustomFormField
-                  form={form}
+                  form={searchFiltersForm}
                   type={FormFieldTypes.SELECT}
                   placeholder="All Status"
                   name="appointmentStatus"
