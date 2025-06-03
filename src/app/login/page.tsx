@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { loginUser } from "./actions";
+import { loginUser } from "../../zustand/actions";
 
 export interface LoginFormInputs {
   email: string;
@@ -18,10 +18,7 @@ export interface LoginFormInputs {
 }
 
 function LoginPage() {
-  const setUser = useAppStore((state) => state.setUser);
-  const isLoading = useAppStore((state) => state.isLoading);
-  const setLoading = useAppStore((state) => state.setLoading);
-
+  const { setUser, isLoading, setLoading } = useAppStore();
   const router = useRouter();
   const form = useForm<LoginFormInputs>({
     defaultValues: {
@@ -89,7 +86,7 @@ function LoginPage() {
             </Form>
           </div>
           <div className="mt-5 flex flex-col items-center gap-5">
-            <Button className="w-full" onClick={form.handleSubmit(onSubmit)}>
+            <Button className="w-full" onClick={form.handleSubmit(onSubmit)} disabled={isLoading}>
               Login
             </Button>
             <div className="text-center text-sm">

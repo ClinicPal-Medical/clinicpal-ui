@@ -24,6 +24,9 @@ import {
   User,
   UserCircleIcon,
 } from "lucide-react";
+import { useAppStore } from "@/zustand/AppStore";
+import { logoutUser } from "@/zustand/actions";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 function UserManager({
@@ -36,6 +39,17 @@ function UserManager({
   };
 }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
+  const { setLoading, logOut } = useAppStore();
+
+  const onLogout = async () => {
+    setLoading(true);
+    await logoutUser();
+    logOut();
+    setLoading(false);
+    router.push("/login");
+  };
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -84,7 +98,7 @@ function UserManager({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
+            <DropdownMenuItem onClick={onLogout} className="cursor-pointer">
               <LogOutIcon />
               Log out
             </DropdownMenuItem>
