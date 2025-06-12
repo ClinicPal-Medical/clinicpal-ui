@@ -116,45 +116,38 @@ function CustomFormField(props: CustomFormFieldProps) {
         );
       case FormFieldTypes.DATEPICKER:
         return (
-          <FormControl>
-            <Popover key={name}>
-              <PopoverTrigger asChild className="bg-transparent">
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-between text-left font-normal",
-                    !field.value && "text-muted-foreground",
-                  )}
-                >
-                  {field.value?.from ? (
-                    field.value.to ? (
-                      <>
-                        {format(field.value.from, "LLL dd, y")} -{" "}
-                        {format(field.value.to, "LLL dd, y")}
-                      </>
-                    ) : (
-                      format(field.value.from, "LLL dd, y")
-                    )
-                  ) : (
-                    <span>{placeholder || "Pick a date"}</span>
-                  )}
-                  <CalendarIcon />
+          <Popover>
+            <PopoverTrigger asChild>
+              <FormControl>
+                <Button variant={"outline"} className={cn("w-full pl-3 text-left font-normal")}>
+                  {(() => {
+                    const value = field.value;
+                    if (value?.from) {
+                      return value.to
+                        ? `${format(value.from, "dd-MM-yyyy")} - ${format(value.to, "dd-MM-yyyy")}`
+                        : format(value.from, "dd-MM-yyyy");
+                    } else if (value instanceof Date) {
+                      return format(value, "dd-MM-yyyy");
+                    } else {
+                      return <span>Pick a date</span>;
+                    }
+                  })()}
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-full p-0">
-                <Calendar
-                  initialFocus
-                  mode={datePickerMode || "single"}
-                  defaultMonth={field.value?.to || field.value?.from}
-                  selected={field.value}
-                  onSelect={field.onChange}
-                  numberOfMonths={numberOfMonths || 1}
-                  fromDate={field.value?.from}
-                  toDate={field.value?.to}
-                />
-              </PopoverContent>
-            </Popover>
-          </FormControl>
+              </FormControl>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode={datePickerMode || "single"}
+                numberOfMonths={numberOfMonths || 1}
+                selected={field.value}
+                onSelect={field.onChange}
+                captionLayout="dropdown"
+                fromDate={field.value?.fromDate}
+                toDate={field.value?.toDate}
+              />
+            </PopoverContent>
+          </Popover>
         );
       default:
         return null;
