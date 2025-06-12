@@ -46,8 +46,8 @@ function UserManager({
     setLoading(true);
     await logoutUser();
     logOut();
-    setLoading(false);
     router.push("/login");
+    setLoading(false);
   };
 
   return (

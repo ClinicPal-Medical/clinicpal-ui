@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import HydrationGuard from "@/components/HydrationGuard";
+import Spinner from "@/components/ui/spinner";
 
 export const metadata: Metadata = {
   title: "ClinicPal",
@@ -15,7 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <HydrationGuard>{children}</HydrationGuard>
+        <HydrationGuard>
+          {children}
+          <Spinner />
+        </HydrationGuard>
       </body>
     </html>
   );
