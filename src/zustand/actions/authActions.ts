@@ -1,7 +1,7 @@
 "use server";
 
 import { ApiErrorResponse, User } from "@/lib/types";
-import { LoginFormInputs } from "../app/login/page";
+import { LoginFormInputs } from "../../app/login/page";
 import { AxiosError, AxiosResponse } from "axios";
 import { cookies } from "next/headers";
 import { POST } from "@/lib/api";

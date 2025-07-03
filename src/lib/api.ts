@@ -21,6 +21,24 @@ export async function POST(endpoint: string, data?: any): Promise<AxiosResponse<
     return response;
   } catch (error) {
     const axiosError = error as AxiosError<ApiErrorResponse>;
-    throw new Error(axiosError?.response?.data.description || "Login failed");
+    throw new Error(axiosError?.response?.data.description);
+  }
+}
+
+export async function GET(endpoint: string, data?: any): Promise<AxiosResponse<any, any>> {
+  const url = `${API_BASE_URL}${endpoint}`;
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    "X-API-KEY": API_KEY,
+    "X-API-SECRET": API_SECRET,
+    "X-Correlation-ID": CORRELATION_ID,
+  };
+
+  try {
+    const response: AxiosResponse<any, any> = await axios.get(url, { headers, params: data });
+    return response;
+  } catch (error) {
+    const axiosError = error as AxiosError<ApiErrorResponse>;
+    throw new Error(axiosError?.response?.data.description);
   }
 }

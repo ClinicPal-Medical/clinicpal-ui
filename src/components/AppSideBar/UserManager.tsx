@@ -25,7 +25,7 @@ import {
   UserCircleIcon,
 } from "lucide-react";
 import { useAppStore } from "@/zustand/AppStore";
-import { logoutUser } from "@/zustand/actions";
+import { logoutUser } from "@/zustand/actions/authActions";
 import { useRouter } from "next/navigation";
 import React from "react";
 
