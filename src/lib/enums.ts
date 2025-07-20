@@ -9,7 +9,18 @@ export enum FormFieldTypes {
 }
 
 export enum UserRoles {
-  ADMIN = "admin",
-  DOCTOR = "doctor",
-  STAFF = "staff",
+  DOCTOR = "DOCTOR",
+  STAFF = "STAFF",
+}
+
+export enum AppointmentTypes {
+  GENERAL = "GENERAL",
+  LAB_TEST = "LAB_TEST",
+}
+
+export enum AppointmentStatus {
+  SCHEDULED = "SCHEDULED",
+  CONFIRMED = "CONFIRMED",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
 }

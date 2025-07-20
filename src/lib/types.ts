@@ -1,14 +1,27 @@
-import { UserRoles } from "./enums";
+import { AppointmentStatus, AppointmentTypes, UserRoles } from "./enums";
 
 export interface User {
-  userId: string;
+  id: string;
   firstName: string;
   lastName: string;
+  suggestionText: string;
   title: string;
   email: string;
   contactNumber: string;
   address: string;
   role: UserRoles;
+}
+
+export interface Patient {
+  id: string;
+  firstName: string;
+  lastName: string;
+  suggestionText: string;
+  dateOfBirth: string;
+  gender: string;
+  email: string;
+  address: string;
+  contactNumber: string;
 }
 
 export interface Clinic {
@@ -18,6 +31,15 @@ export interface Clinic {
   phone: string;
   email: string;
   website: string;
+}
+
+export interface Appointment {
+  id: string;
+  patientId: string;
+  doctorId: string;
+  appointmentType: AppointmentTypes;
+  appointmentStatus: AppointmentStatus;
+  appointmentDateTime: string;
 }
 
 export interface ApiErrorResponse {
