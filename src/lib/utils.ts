@@ -24,7 +24,7 @@ export function getCurrentDate() {
 }
 
 export const toLocalDate = (str: string) => {
-  const [year, month, day] = str.split("-").map(Number);
+  const [year, month, day] = str.split("T")[0].split("-").map(Number);
   return new Date(year, month - 1, day);
 };
 

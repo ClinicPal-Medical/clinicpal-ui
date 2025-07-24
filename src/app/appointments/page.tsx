@@ -24,64 +24,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FormFieldTypes } from "@/lib/enums";
-import { toLocalDate } from "@/lib/utils";
+import { AppointmentStatus, AppointmentTypes, FormFieldTypes } from "@/lib/enums";
+import { formatDateTime, toLocalDate } from "@/lib/utils";
 import { CircleX, ListFilter, Pencil, RotateCcw, Search } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import AppointmentForm from "./AppointmentForm";
+import { createAppointment, getAppointments } from "@/zustand/actions/appointmentActions";
+import { AppointmentSummary } from "@/lib/types";
+import { useAppStore } from "@/zustand/AppStore";
 
-interface AppointmentsTableData {
-  headers: string[];
-  rows: {
-    patient: string;
-    doctor: string;
-    date: string;
-    type: string;
-    status: string;
-  }[];
-}
-
-const tableData: AppointmentsTableData = {
-  headers: ["Patient", "Doctor", "Date", "Type", "Status"],
-  rows: [
-    {
-      patient: "John Doe",
-      doctor: "Dr. Smith",
-      date: "2025-05-01",
-      type: "General Appointment",
-      status: "Scheduled",
-    },
-    {
-      patient: "Jane Doe",
-      doctor: "Dr. Brown",
-      date: "2025-05-02",
-      type: "Lab Test",
-      status: "Pending",
-    },
-    {
-      patient: "Alice Johnson",
-      doctor: "Dr. Green",
-      date: "2025-05-03",
-      type: "General Appointment",
-      status: "Cancelled",
-    },
-    {
-      patient: "Bob Smith",
-      doctor: "Dr. White",
-      date: "2025-05-04",
-      type: "Lab Test",
-      status: "Scheduled",
-    },
-    {
-      patient: "Charlie Brown",
-      doctor: "Dr. Green",
-      date: "2025-05-03",
-      type: "General Appointment",
-      status: "Cancelled",
-    },
-  ],
-};
+const appointmentsTableHeaders = ["Patient", "Doctor", "Date & Time", "Type", "Status"];
 
 interface searchFiltersInputs {
   searchQuery: string;
@@ -93,15 +46,26 @@ interface searchFiltersInputs {
   };
 }
 
-interface AppointmentFormInputs {
+export interface AppointmentFormInputs {
   patient: string;
   doctor: string;
-  type: string;
-  appointmentDate: Date;
+  type: AppointmentTypes;
+  appointmentDate: string;
+  appointmentTime: string;
+}
+
+interface AppointmentTableData {
+  patient: string;
+  doctor: string;
+  appointmentDateTime: string;
+  appointmentType: string;
+  appointmentStatus: AppointmentStatus;
 }
 
 function Appointments() {
-  const [data, setData] = useState(tableData);
+  const { setLoading } = useAppStore();
+  const [data, setData] = useState<AppointmentTableData[] | []>([]);
+  const [appointmentFormOpen, setAppointmentFormOpen] = useState<boolean>(false);
 
   const searchFiltersForm = useForm<searchFiltersInputs>({
     defaultValues: {
@@ -119,8 +83,9 @@ function Appointments() {
     defaultValues: {
       patient: "",
       doctor: "",
-      type: "general",
+      type: AppointmentTypes.GENERAL,
       appointmentDate: undefined,
+      appointmentTime: undefined,
     },
   });
 
@@ -129,40 +94,76 @@ function Appointments() {
   const { handleSubmit: handleAppointmentFormSubmit, reset: resetAppointmentForm } =
     appointmentForm;
 
-  const onAppointmentFormSubmit = (data: AppointmentFormInputs) => {
-    console.log(data);
+  const onAppointmentFormSubmit = async (data: AppointmentFormInputs) => {
+    const { appointmentDate, appointmentTime, patient, doctor, type } = data;
+    const formattedDateTime: string = formatDateTime(new Date(appointmentDate), appointmentTime);
+    const payload = {
+      patientId: patient,
+      doctorId: doctor,
+      appointmentType: type,
+      appointmentDateTime: formattedDateTime,
+      appointmentStatus: AppointmentStatus.SCHEDULED,
+    };
+
+    setLoading(true);
+    await createAppointment(payload);
+    setLoading(false);
+
+    setAppointmentFormOpen(false);
+    getAllAppointments();
   };
 
   const applyFilters = () => {
     const { searchQuery, appointmentStatus, appointmentType, dateRange } = getValues();
 
-    const filteredData = tableData.rows.filter((row) => {
+    const filteredData = data.filter((row) => {
       return (
         (searchQuery === "" ||
           row.patient.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-          row.doctor.toLowerCase().split(". ")[1].startsWith(searchQuery.toLowerCase())) &&
+          row.doctor.toLowerCase().startsWith(searchQuery.toLowerCase())) &&
         (appointmentType.toLowerCase().includes("all") ||
-          row.type.toLowerCase().includes(appointmentType.toLowerCase())) &&
+          row.appointmentType.toLowerCase().includes(appointmentType.toLowerCase())) &&
         (appointmentStatus.toLowerCase().includes("all") ||
-          row.status.toLowerCase().includes(appointmentStatus.toLowerCase())) &&
+          row.appointmentStatus.toLowerCase().includes(appointmentStatus.toLowerCase())) &&
         (dateRange == undefined ||
           dateRange.from == undefined ||
-          toLocalDate(row.date).getTime() === new Date(dateRange.from).getTime() ||
-          (toLocalDate(row.date) >= new Date(dateRange.from) &&
-            toLocalDate(row.date) <= new Date(dateRange.to)))
+          toLocalDate(row.appointmentDateTime).getTime() === new Date(dateRange.from).getTime() ||
+          (toLocalDate(row.appointmentDateTime) >= new Date(dateRange.from) &&
+            toLocalDate(row.appointmentDateTime) <= new Date(dateRange.to)))
       );
     });
 
-    setData((prevData) => ({
-      ...prevData,
-      rows: filteredData,
-    }));
+    setData(filteredData);
   };
 
   const resetFilters = () => {
     reset();
-    setData(tableData);
+    getAllAppointments();
   };
+
+  const getAllAppointments = async () => {
+    const response: [AppointmentSummary] | [] = await getAppointments();
+
+    let extractedData = [];
+    if (response.length > 0) {
+      extractedData = response.map((appointment) => {
+        return {
+          patient: appointment.patient,
+          doctor: appointment.doctor,
+          appointmentDateTime: `${appointment.appointmentDateTime.split("T")[0]} @ ${appointment.appointmentDateTime.split("T")[1].slice(0, 5)}`,
+          appointmentType:
+            appointment.appointmentType === AppointmentTypes.GENERAL ? "General" : "Lab Test",
+          appointmentStatus: appointment.appointmentStatus,
+        };
+      });
+
+      setData(extractedData);
+    }
+  };
+
+  useEffect(() => {
+    getAllAppointments();
+  }, []);
 
   return (
     <AppSidebarProvider>
@@ -173,13 +174,16 @@ function Appointments() {
             <p className="font-extralight text-muted-foreground">Manage your appointments</p>
           </div>
           <div>
-            <Dialog>
+            <Dialog open={appointmentFormOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  onClick={() => setAppointmentFormOpen(true)}
+                >
                   + New Appointment
                 </Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="bg-popover" showCloseButton={false}>
                 <DialogHeader>
                   <DialogTitle className="text-2xl font-semibold font-stretch-105%">
                     New Appointment
@@ -191,7 +195,13 @@ function Appointments() {
                 <AppointmentForm form={appointmentForm} className="my-5" />
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="secondary" onClick={() => resetAppointmentForm()}>
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        resetAppointmentForm();
+                        setAppointmentFormOpen(false);
+                      }}
+                    >
                       Cancel
                     </Button>
                   </DialogClose>
@@ -269,14 +279,14 @@ function Appointments() {
               <Table>
                 <TableHeader>
                   <TableRow data-role="header">
-                    {data.headers.map((header, idx) => (
+                    {appointmentsTableHeaders.map((header, idx) => (
                       <TableHead key={idx}>{header}</TableHead>
                     ))}
                     <TableHead className="text-center">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.rows.map((row, rowIdx) => (
+                  {data.map((row, rowIdx) => (
                     <TableRow key={rowIdx}>
                       {Object.values(row).map((cell, cellIdx) => (
                         <TableCell key={cellIdx}>{cell}</TableCell>
@@ -295,10 +305,10 @@ function Appointments() {
                       </TableCell>
                     </TableRow>
                   ))}
-                  {data.rows.length === 0 && (
+                  {data.length === 0 && (
                     <TableRow>
                       <TableCell
-                        colSpan={data.headers.length}
+                        colSpan={appointmentsTableHeaders.length}
                         className="text-center text-muted-foreground"
                       >
                         No results found
