@@ -6,6 +6,7 @@ export enum FormFieldTypes {
   RADIO = "radio",
   PHONEINPUT = "phoneInput",
   DATEPICKER = "datePicker",
+  TIMEPICKER = "timePicker",
 }
 
 export enum UserRoles {

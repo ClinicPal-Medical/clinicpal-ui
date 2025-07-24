@@ -28,7 +28,7 @@ function Autocomplete({
       name={name}
       render={({ field }) => {
         return (
-          <FormItem>
+          <FormItem className="relative">
             {label && <FormLabel className="data-[error=true]:text-foreground">{label}</FormLabel>}
             <Command className="rounded-lg border shadow-md md:min-w-[450px]">
               <CommandInput
@@ -43,7 +43,7 @@ function Autocomplete({
                 }}
               />
               {options && options.length > 0 && (
-                <CommandList>
+                <CommandList className="absolute z-50 top-15 w-full bg-popover border border-accent rounded-md shadow-lg">
                   <CommandGroup>
                     {options.map((option, index) => {
                       return (

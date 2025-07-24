@@ -2,7 +2,7 @@
 
 import { GET, POST } from "@/lib/api";
 import { AppointmentTypes, AppointmentStatus } from "@/lib/enums";
-import { ApiErrorResponse, Appointment } from "@/lib/types";
+import { ApiErrorResponse, Appointment, AppointmentSummary } from "@/lib/types";
 import { AxiosError, AxiosResponse } from "axios";
 
 export async function createAppointment(appointmentData: {
@@ -25,6 +25,18 @@ export async function createAppointment(appointmentData: {
   } catch (error) {
     const axiosError = error as AxiosError<ApiErrorResponse>;
     throw new Error(axiosError?.response?.data.description || "Failed to create appointment");
+  }
+}
+
+export async function getAppointments(): Promise<[AppointmentSummary] | []> {
+  try {
+    const response: AxiosResponse = await GET(`/appointments`);
+    const results: [AppointmentSummary] = response?.data;
+
+    return results;
+  } catch (error) {
+    const axiosError = error as AxiosError<ApiErrorResponse>;
+    throw new Error(axiosError?.response?.data.description || "Failed to fetch appointments");
   }
 }
 

@@ -16,8 +16,8 @@ export async function loginUser({ email, password }: LoginFormInputs): Promise<U
     const response: AxiosResponse = await POST("/auth/login", payload);
     const user: User = response?.data;
 
-    if (user && user.userId) {
-      (await cookies()).set("token", user?.userId, {
+    if (user && user.id) {
+      (await cookies()).set("token", user?.id, {
         httpOnly: true,
         secure: true,
         path: "/",

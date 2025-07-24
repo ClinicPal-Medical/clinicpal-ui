@@ -5,7 +5,7 @@ import React from "react";
 import { E164Number } from "libphonenumber-js";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./form";
 import { Input } from "./input";
-import { CalendarIcon, LucideIcon } from "lucide-react";
+import { CalendarIcon, Clock, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
@@ -119,7 +119,10 @@ function CustomFormField(props: CustomFormFieldProps) {
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
-                <Button variant={"outline"} className={cn("w-full pl-3 text-left font-normal")}>
+                <Button
+                  variant={"outline"}
+                  className={cn("w-full pl-3 text-left font-normal bg-transparent")}
+                >
                   {(() => {
                     const value = field.value;
                     if (value?.from) {
@@ -148,6 +151,22 @@ function CustomFormField(props: CustomFormFieldProps) {
               />
             </PopoverContent>
           </Popover>
+        );
+      case FormFieldTypes.TIMEPICKER:
+        return (
+          <FormControl>
+            <div className="flex bg-transparent items-center rounded-md border border-input aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive">
+              <Input
+                type="time"
+                id="time-picker"
+                className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-transparent appearance-none
+              [&::-webkit-calendar-picker-indicator]:hidden
+              [&::-webkit-calendar-picker-indicator]:appearance-none"
+                onChange={field.onChange}
+              />
+              <Clock className="mr-3 h-4 w-4 opacity-50" />
+            </div>
+          </FormControl>
         );
       default:
         return null;

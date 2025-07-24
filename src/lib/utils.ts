@@ -27,3 +27,7 @@ export const toLocalDate = (str: string) => {
   const [year, month, day] = str.split("-").map(Number);
   return new Date(year, month - 1, day);
 };
+
+export const formatDateTime = (date: Date, time: string) => {
+  return date.toISOString().slice(0, 11) + time;
+};

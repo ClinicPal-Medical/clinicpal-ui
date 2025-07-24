@@ -35,8 +35,16 @@ export interface Clinic {
 
 export interface Appointment {
   id: string;
-  patientId: string;
-  doctorId: string;
+  patient: Patient;
+  doctor: User;
+  appointmentType: AppointmentTypes;
+  appointmentStatus: AppointmentStatus;
+  appointmentDateTime: string;
+}
+export interface AppointmentSummary {
+  id: string;
+  patient: string;
+  doctor: string;
   appointmentType: AppointmentTypes;
   appointmentStatus: AppointmentStatus;
   appointmentDateTime: string;
