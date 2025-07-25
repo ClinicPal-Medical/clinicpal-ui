@@ -150,9 +150,8 @@ function Appointments() {
         return {
           patient: appointment.patient,
           doctor: appointment.doctor,
-          appointmentDateTime: `${appointment.appointmentDateTime.split("T")[0]} @ ${appointment.appointmentDateTime.split("T")[1].slice(0, 5)}`,
-          appointmentType:
-            appointment.appointmentType === AppointmentTypes.GENERAL ? "General" : "Lab Test",
+          appointmentDateTime: appointment.appointmentDateTime,
+          appointmentType: appointment.appointmentType,
           appointmentStatus: appointment.appointmentStatus,
         };
       });
