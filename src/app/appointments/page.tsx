@@ -65,6 +65,7 @@ interface AppointmentTableData {
 function Appointments() {
   const { setLoading } = useAppStore();
   const [data, setData] = useState<AppointmentTableData[] | []>([]);
+  const [displayData, setDisplayData] = useState<AppointmentTableData[] | []>([]);
   const [appointmentFormOpen, setAppointmentFormOpen] = useState<boolean>(false);
 
   const searchFiltersForm = useForm<searchFiltersInputs>({
@@ -133,12 +134,12 @@ function Appointments() {
       );
     });
 
-    setData(filteredData);
+    setDisplayData(filteredData);
   };
 
   const resetFilters = () => {
     reset();
-    getAllAppointments();
+    setDisplayData(data);
   };
 
   const getAllAppointments = async () => {
@@ -157,6 +158,7 @@ function Appointments() {
       });
 
       setData(extractedData);
+      setDisplayData(extractedData);
     }
   };
 
@@ -285,7 +287,7 @@ function Appointments() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.map((row, rowIdx) => (
+                  {displayData.map((row, rowIdx) => (
                     <TableRow key={rowIdx}>
                       {Object.values(row).map((cell, cellIdx) => (
                         <TableCell key={cellIdx}>{cell}</TableCell>
@@ -304,7 +306,7 @@ function Appointments() {
                       </TableCell>
                     </TableRow>
                   ))}
-                  {data.length === 0 && (
+                  {displayData.length === 0 && (
                     <TableRow>
                       <TableCell
                         colSpan={appointmentsTableHeaders.length}
