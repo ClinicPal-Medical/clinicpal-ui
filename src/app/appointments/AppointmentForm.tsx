@@ -9,8 +9,8 @@ import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { AppointmentFormInputs } from "./page";
-import { predictiveSearch } from "@/zustand/actions/appointmentActions";
 import { Patient, User } from "@/lib/types";
+import { useAppStore } from "@/zustand/AppStore";
 
 function AppointmentForm({
   form,
@@ -19,6 +19,7 @@ function AppointmentForm({
   form: UseFormReturn<AppointmentFormInputs>;
   className?: string;
 }) {
+  const { predictiveSearch } = useAppStore();
   const [patientOptions, setPatientOptions] = useState<Patient[]>([]);
   const [doctorOptions, setDoctorOptions] = useState<User[]>([]);
 

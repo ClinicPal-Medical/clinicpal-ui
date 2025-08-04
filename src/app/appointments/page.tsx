@@ -30,7 +30,6 @@ import { CircleX, ListFilter, Pencil, RotateCcw, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import AppointmentForm from "./AppointmentForm";
-import { createAppointment, getAppointments } from "@/zustand/actions/appointmentActions";
 import { AppointmentSummary } from "@/lib/types";
 import { useAppStore } from "@/zustand/AppStore";
 
@@ -63,7 +62,7 @@ interface AppointmentTableData {
 }
 
 function Appointments() {
-  const { setLoading } = useAppStore();
+  const { createAppointment, getAppointments } = useAppStore();
   const [data, setData] = useState<AppointmentTableData[] | []>([]);
   const [displayData, setDisplayData] = useState<AppointmentTableData[] | []>([]);
   const [appointmentFormOpen, setAppointmentFormOpen] = useState<boolean>(false);
@@ -106,9 +105,7 @@ function Appointments() {
       appointmentStatus: AppointmentStatus.SCHEDULED,
     };
 
-    setLoading(true);
     await createAppointment(payload);
-    setLoading(false);
 
     setAppointmentFormOpen(false);
     getAllAppointments();
