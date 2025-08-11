@@ -10,7 +10,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { loginUser } from "../../zustand/actions/authActions";
 
 export interface LoginFormInputs {
   email: string;
@@ -18,7 +17,7 @@ export interface LoginFormInputs {
 }
 
 function LoginPage() {
-  const { setUser, isLoading, setLoading } = useAppStore();
+  const { setUser, isLoading, logIn } = useAppStore();
   const router = useRouter();
   const form = useForm<LoginFormInputs>({
     defaultValues: {
@@ -28,15 +27,9 @@ function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormInputs) => {
-    setLoading(true);
-    try {
-      const user: User = await loginUser(data);
-      setUser(user);
-      router.push("/dashboard");
-    } catch (error) {
-      alert(error);
-    }
-    setLoading(false);
+    const user: User = await logIn(data);
+    setUser(user);
+    router.push("/dashboard");
   };
 
   return (

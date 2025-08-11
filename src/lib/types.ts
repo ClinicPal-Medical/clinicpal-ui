@@ -54,5 +54,5 @@ export interface ApiErrorResponse {
   status: number;
   error: string;
   description: string;
-  path: string;
+  path?: string;
 }
