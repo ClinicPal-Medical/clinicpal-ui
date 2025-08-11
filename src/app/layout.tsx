@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import HydrationGuard from "@/components/HydrationGuard";
 import Spinner from "@/components/ui/spinner";
+import ErrorBoundary from "@/components/ui/errorBoundary";
 
 export const metadata: Metadata = {
   title: "ClinicPal",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body className={`antialiased`}>
         <HydrationGuard>
           {children}
+          <ErrorBoundary />
           <Spinner />
         </HydrationGuard>
       </body>

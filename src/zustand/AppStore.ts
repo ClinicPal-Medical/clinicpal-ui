@@ -137,8 +137,10 @@ const loginUser = async ({ email, password }: LoginFormInputs): Promise<User> =>
 };
 
 const logoutUser = async () => {
+  setLoading(true);
   clearUser();
   await deleteSessionCookie();
+  setLoading(false);
 };
 
 export const useAppStore = create<AppStore>()(

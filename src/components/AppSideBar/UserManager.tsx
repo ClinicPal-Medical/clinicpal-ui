@@ -25,7 +25,6 @@ import {
   UserCircleIcon,
 } from "lucide-react";
 import { useAppStore } from "@/zustand/AppStore";
-import { logoutUser } from "@/zustand/actions/authActions";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -40,14 +39,11 @@ function UserManager({
 }) {
   const { isMobile } = useSidebar();
   const router = useRouter();
-  const { setLoading, logOut } = useAppStore();
+  const { logOut } = useAppStore();
 
   const onLogout = async () => {
-    setLoading(true);
-    await logoutUser();
     logOut();
     router.push("/login");
-    setLoading(false);
   };
 
   return (
